@@ -12,13 +12,7 @@ Gameboard.setCell = (pos) => {
   if (Gameboard[pos] === "") {
     Gameboard[pos] = token;
     tokenIsSet = true;
-    displayController().showsGameBoard();
-    console.log(
-      `The player "${Game().getCurrentPlayer().name}" draw "${
-        Game().getCurrentPlayer().token
-      }" in the position ${pos}`
-    );
-    // Gameboard.checkForDraw() only for test
+    displayController().showsMovements(pos);
     Gameboard.checkForWin(Game().getCurrentPlayer().token);
     if (
       Gameboard.checkForDraw() === false &&
@@ -39,7 +33,7 @@ Gameboard.setCell = (pos) => {
     }
     return tokenIsSet;
   } else {
-    console.log(`The position "${pos}" was occupied. Try again!`);
+    displayController().showsOccupiedPosition(pos);
     return;
   }
 };
@@ -92,10 +86,8 @@ Gameboard.checkForDraw = () => {
   // If there are no moves available it returns false otherwise it returns true
   for (let i = 0; i < Gameboard.length; i++) {
     if (Gameboard.indexOf("") !== -1) {
-      // console.log(true); Only for test
       return true; // Movements are available
     } else {
-      // console.log(false); Only for test
       return false; //No moves available
     }
   }
@@ -142,8 +134,28 @@ const displayController = () => {
       }"`
     );
   };
+  const showsMovements = (pos) => {
+    displayController().showsGameBoard();
+    console.log(
+      `The player "${Game().getCurrentPlayer().name}" draw "${
+        Game().getCurrentPlayer().token
+      }" in the position ${pos}`
+    );
+  };
 
-  return { startMessage, showsGameBoard, showsWinner, showsTurn, showsTie };
+  const showsOccupiedPosition = (pos) => {
+    console.log(`The position "${pos}" was occupied. Try again!`);
+  };
+
+  return {
+    startMessage,
+    showsGameBoard,
+    showsWinner,
+    showsTurn,
+    showsTie,
+    showsMovements,
+    showsOccupiedPosition,
+  };
 };
 
 const Game = () => {
