@@ -167,7 +167,41 @@ const Game = () => {
   return { switchPlayerTurn, getCurrentPlayer, currentPlayer };
 };
 
+const toggleTheme = () => {
+  const ambientBtn = document.querySelector("#ambient-btn");
+  const header = document.querySelector("header");
+  const title = document.querySelector(".title");
+  const settings = document.querySelector(".settings-btn");
+  const reset = document.querySelector(".reset-btn");
+  const turn = document.querySelector(".turn-message");
+  xIcon = [...document.querySelectorAll("i.fa-solid.fa-x")];
+  oIcon = [...document.querySelectorAll("i.fa-regular.fa-circle")];
+  const message = document.querySelector(".message");
+  const small = document.querySelector("small");
+  ambientBtn.addEventListener("click", () => {
+    ambientBtn.className === "fa fa-lightbulb"
+      ? (ambientBtn.classList = "fa fa-moon")
+      : (ambientBtn.classList = "fa fa-lightbulb");
+    document.body.classList.toggle("light");
+    header.classList.toggle("header-light");
+    title.classList.toggle("title-light");
+    settings.classList.toggle("btn-light");
+    reset.classList.toggle("btn-light");
+    turn.classList.toggle("turn-light");
+    xIcon.map((el) => el.classList.toggle("x-light"));
+    oIcon.map((el) => el.classList.toggle("circle-light"));
+    for (let i = 0; i < 9; i++) {
+      const cell = document.querySelector(`#cell-${i}`);
+      cell.classList.toggle("grid-light");
+    }
+    message.classList.toggle("message-light");
+    small.classList.toggle("footer-light");
+    small.children[0].classList.toggle("footer-light");
+  });
+};
+
 (() => {
+  toggleTheme();
   displayController().startMessage();
   displayController().showsGameBoard();
   displayController().showsTurn();

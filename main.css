@@ -1,0 +1,235 @@
+:root {
+  --fern-frond-50: #fafce9;
+  --fern-frond-100: #f4f8cf;
+  --fern-frond-200: #e8f1a5;
+  --fern-frond-300: #d5e670;
+  --fern-frond-400: #c0d744;
+  --fern-frond-500: #a3bd25;
+  --fern-frond-600: #7f961a;
+  --fern-frond-700: #5b6d17;
+  --fern-frond-800: #4d5b19;
+  --fern-frond-900: #424e19;
+  --fern-frond-950: #222b08;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html,
+body {
+  height: 100%;
+  width: 100%;
+}
+
+body {
+  background: linear-gradient(var(--fern-frond-500), var(--fern-frond-800));
+}
+
+header {
+  height: 10%;
+  padding: 1em 2em;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-family: "Rubik Doodle Shadow", sans-serif;
+  font-size: 1.2rem;
+  text-align: center;
+  background-color: var(--fern-frond-950);
+}
+
+.title {
+  color: var(--fern-frond-400);
+}
+#ambient-btn {
+  cursor: pointer;
+}
+i.fa.fa-lightbulb {
+  color: var(--fern-frond-200);
+  font-size: 2rem;
+}
+
+.content {
+  margin-top: 1.5em;
+  display: grid;
+  justify-content: center;
+  align-content: center;
+}
+
+.board-container {
+  padding: 0.5em;
+  display: grid;
+  grid-template-columns: repeat(3, 120px);
+  grid-template-rows: repeat(3, 120px);
+  border: none;
+  justify-content: center;
+  align-content: center;
+}
+
+.board-container > * {
+  display: grid;
+  align-content: center;
+  justify-content: center;
+  font-size: 4rem;
+  font-weight: bold;
+  color: var(--fern-frond-400);
+}
+
+#cell-0,
+#cell-1,
+#cell-3,
+#cell-4 {
+  border-top: none;
+  border-right: 5px solid var(--fern-frond-500);
+  border-bottom: 5px solid var(--fern-frond-500);
+}
+
+#cell-2,
+#cell-5 {
+  border-top: none;
+  border-right: none;
+  border-bottom: 5px solid var(--fern-frond-500);
+}
+
+#cell-6 {
+  border-right: 5px solid var(--fern-frond-500);
+}
+#cell-7 {
+  border-bottom: none;
+  border-right: 5px solid var(--fern-frond-500);
+}
+
+.message-box {
+  margin-top: 0.5em;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.message {
+  font-family: "Rubik Doodle Shadow", sans-serif;
+  font-size: 1.5rem;
+  letter-spacing: 0.2rem;
+  color: var(--fern-frond-400);
+}
+
+.turn-box {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 1.1rem;
+  font-family: "Rubik Doodle Shadow", sans-serif;
+  font-weight: bold;
+  padding: 1em;
+  color: var(--fern-frond-200);
+  text-align: center;
+}
+
+.btn-container {
+  padding: 1em;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0.5em;
+}
+
+.settings-btn,
+.reset-btn {
+  width: 8em;
+  height: 2em;
+  font-size: 1.3rem;
+  border: none;
+  border-radius: 8px;
+  font-family: sans-serif;
+  background-color: var(--fern-frond-50);
+  color: var(--fern-frond-950);
+  cursor: pointer;
+}
+
+footer {
+  width: 100%;
+  position: absolute;
+  bottom: 0;
+  font-size: 1.6rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 0.2em;
+}
+
+small {
+  color: var(--fern-frond-300);
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0.8em;
+}
+small:hover {
+  color: var(--fern-frond-50);
+  font-size: 1.3rem;
+}
+.footer-link {
+  text-decoration: none;
+}
+
+.light {
+  background: var(--fern-frond-50);
+}
+
+.header-light {
+  background-color: var(--fern-frond-500);
+  color: var(--fern-frond-950);
+}
+
+.title-light {
+  color: var(--fern-frond-950);
+}
+
+.fa-moon {
+  color: #222b08;
+  font-size: 2rem;
+}
+
+.fa-x {
+  color: var(--fern-frond-300);
+}
+
+.fa-circle {
+  color: var(--fern-frond-50);
+}
+
+.turn-message {
+  color: var(--fern-frond-200);
+}
+
+.btn-light {
+  background-color: var(--fern-frond-950);
+  color: var(--fern-frond-100);
+}
+
+.turn-light,
+.message-light {
+  color: var(--fern-frond-700);
+}
+.x-light {
+  color: var(--fern-frond-900);
+}
+
+.circle-light {
+  color: var(--fern-frond-600);
+}
+
+.grid-light {
+  border-color: var(--fern-frond-800) !important;
+}
+
+.footer-light {
+  color: var(--fern-frond-950);
+}
+
+.footer-light:hover {
+  color: var(--fern-frond-700);
+}
