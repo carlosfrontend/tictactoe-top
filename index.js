@@ -200,8 +200,21 @@ const toggleTheme = () => {
   });
 };
 
+const toggleDialog = () => {
+  const closeBtn = document.querySelector("#closeBtn");
+  const settingsDialog = document.querySelector("#settingsDialog");
+  const settingsBtn = document.querySelector(".settings-btn");
+  settingsBtn.addEventListener("click", () => {
+    settingsDialog.showModal();
+  });
+  closeBtn.addEventListener("click", () => {
+    settingsDialog.close();
+  });
+};
+
 (() => {
   toggleTheme();
+  toggleDialog();
   displayController().startMessage();
   displayController().showsGameBoard();
   displayController().showsTurn();
