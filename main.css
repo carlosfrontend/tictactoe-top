@@ -146,6 +146,10 @@ i.fa.fa-moon {
   background-color: var(--fern-frond-50);
   color: var(--fern-frond-950);
   cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+.settings-btn:hover, .reset-btn:hover{
+  background-color: rgba(220, 220, 225, 0.832);
 }
 
 footer {
@@ -210,6 +214,12 @@ small:hover {
   color: var(--fern-frond-100);
 }
 
+.btn-light:hover{
+  background-color: var(--fern-frond-900);
+  color: var(--fern-frond-50);
+  color: var(--fern-frond-50);
+}
+
 .turn-light,
 .message-light {
   color: var(--fern-frond-700);
@@ -236,12 +246,22 @@ small:hover {
 
 dialog {
   margin: 10% auto;
+  opacity: 0;
+  transition: opacity 0.8s;
   width: 20%;
   min-width: 320px;
   background-color: #ffffff;
   padding: 34px;
-  border: 0;
+  border: none;
   border-radius: 5px;
+}
+
+dialog[open] {
+  opacity: 1;
+  pointer-events: inherit;
+}
+dialog::backdrop {
+  background-color: rgba(54, 54, 58, 0.2);
 }
 
 #form{
@@ -259,6 +279,7 @@ input, select, #cleanBtn, #closeBtn{
   padding: .2em 0;
   width: 100%;
   background: var(--fern-frond-300);
+  -webkit-tap-highlight-color: transparent;
 }
 
 input[type='text']{
@@ -282,6 +303,8 @@ label{
 #cleanBtn, #closeBtn, #submitBtn{
   margin: .5em auto;
   width: 30%;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
 }
 option{
   font-weight: bold;
