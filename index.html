@@ -10,82 +10,103 @@
       crossorigin="anonymous"
       referrerpolicy="no-referrer"
     />
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Rubik+Doodle+Shadow&display=swap"
-      rel="stylesheet"
-    />
     <link rel="stylesheet" href="./main.css" />
     <title>Tic Tac Toe Game</title>
   </head>
   <body>
     <!-- Dialog start -->
     <dialog id="settingsDialog">
-       <div class="form-container">
-    <form id="form" action="" method="POST">
-      <div class="group">
-        <label for="game-mode">Game Mode</label>
-        <select name="game-mode" id="game-mode">
-          <option value="player-player">Player VS Player</option>
-          <option value="player-machine">Player VS Machine</option>
-        </select>
+      <div class="form-container">
+        <form id="form" action="" method="POST">
+          <div class="group">
+            <label for="game-mode">Game Mode</label>
+            <select name="game-mode" id="game-mode">
+              <option value="player-player">Player VS Player</option>
+              <option value="player-machine">Player VS Machine</option>
+            </select>
+          </div>
+          <div class="group">
+            <label for="player-name-one">Player Name One</label>
+            <input
+              type="text"
+              name="player-name-one"
+              id="player-name-one"
+              placeholder="Player One"
+              maxlength="8"
+              required
+            />
+          </div>
+          <div class="group">
+            <label for="token-one">Token of Player One</label>
+            <select name="token-one" id="token-one">
+              <option value="X">X</option>
+              <option value="O">O</option>
+            </select>
+          </div>
+          <div id="machine-group" class="group">
+            <label for="player-name-two">Player Name Two</label>
+            <input
+              type="text"
+              name="player-name-two"
+              id="player-name-two"
+              placeholder="Player Two"
+              maxlength="8"
+              required
+            />
+          </div>
+          <div class="group">
+            <input id="submitBtn" type="submit" value="Send" />
+          </div>
+          <div class="group">
+            <button id="closeBtn" type="button">Close</button>
+            <button id="cleanBtn" type="reset">Clean</button>
+          </div>
+        </form>
       </div>
-      <div class="group">
-        <label for="player-name">Player Name</label>
-        <input
-          type="text"
-          name="player-name"
-          id="player-name"
-          placeholder="Player Name"
-          maxlength="8"
-          required
-        />
-      </div>
-      <div class="group">
-        <label for="token">Choose a token</label>
-        <select name="token" id="token">
-          <option value="X">X</option>
-          <option value="O">O</option>
-        </select>
-      </div>
-      <input id="submitBtn" type="submit" value="Send" />
-     <div class="group-buttons">
-       <button id="closeBtn" type="button">Close</button>
-      <button id="cleanBtn" type="reset">Clean</button>
-     </div>
-    </form>
-  </div>
     </dialog>
     <!-- End Dialog -->
     <header>
       <h1 class="title">TIC TAC TOE</h1>
-      <i id="ambient-btn" class="fa fa-moon" aria-hidden="true"></i>
+      <i id="ambient-btn" class="fa fa-sun" aria-hidden="true"></i>
     </header>
-<div class="content">
-  <div class="btn-container">
-    <button type="button" class="settings-btn"><i class="fa-solid fa-gear"></i> Settings</button>
-    <button type="button" class="reset-btn"><i class="fa-solid fa-arrow-rotate-left"></i> Reset</button>      
-  </div>
-  <div class="turn-box">
-    <h2 class="turn-message">Juanito's turn with X</h2>
-  </div>
-  <div class="board-container">
-    <div id="cell-0"><i class="fa-solid fa-x"></i></div>
-    <div id="cell-1"><i class="fa-regular fa-circle"></i></div>
-    <div id="cell-2"><i class="fa-solid fa-x"></i></div>
-    <div id="cell-3"><i class="fa-solid fa-x"></i></div>
-    <div id="cell-4"><i class="fa-regular fa-circle"></i></div>
-    <div id="cell-5"><i class="fa-solid fa-x"></i></div>
-    <div id="cell-6"><i class="fa-regular fa-circle"></i></div>
-    <div id="cell-7"><i class="fa-solid fa-x"></i></div>
-    <div id="cell-8"><i class="fa-solid fa-x"></i></div>
-  </div>
-  <div class="message-box">
-    <h2 class="message">Juanito Wins!</h2>
-  </div>
-  <footer><a class="footer-link" target="_blank" href="https://github.com/carlosfrontend"><small><i class="fa-brands fa-github-alt"></i>Coded by Carlosfrontend &copy;</small></a></footer>
-</div>
+    <div class="main">
+      <div class="btn-container">
+        <button type="button" class="settings-btn">
+          <i class="fa-solid fa-gear"></i> Settings
+        </button>
+        <button type="button" class="reset-btn">
+          <i class="fa-solid fa-arrow-rotate-left"></i> Reset
+        </button>
+      </div>
+      <div class="turn-box">
+        <h2 class="turn-message">Juanito's turn with X</h2>
+      </div>
+      <div class="board-container">
+       <div class="grid-container">
+        <div id="cell-0" class="cell"></div>
+        <div id="cell-1" class="cell"></div>
+        <div id="cell-2" class="cell"></div>
+        <div id="cell-3" class="cell"></div>
+        <div id="cell-4" class="cell"></div>
+        <div id="cell-5" class="cell"></div>
+        <div id="cell-6" class="cell"></div>
+        <div id="cell-7" class="cell"></div>
+        <div id="cell-8" class="cell"></div>
+       </div>
+      </div>
+      <div class="message-box">
+        <h2 class="message">Juanito Wins!</h2>
+      </div>
+    </div>
+    <footer class="footer">
+      <a
+        class="footer-link"
+        target="_blank"
+        href="https://github.com/carlosfrontend"
+        ><i class="fa-brands fa-github-alt"></i><small> Coded by Carlosfrontend</small>
+        &copy;</a
+      >
+    </footer>
     <script src="./index.js"></script>
   </body>
 </html>

@@ -1,5 +1,5 @@
 const createGameBoard = () => {
-  const board = ["", "", "", "", "", "", "", "", ""];
+  const board = ["O", "O", "X", "O", "X", "O", "X", "O", "X"];
   return board;
 };
 
@@ -113,6 +113,13 @@ const displayController = () => {
     console.log(`| ${Gameboard[0]} | ${Gameboard[1]} | ${Gameboard[2]} |`);
     console.log(`| ${Gameboard[3]} | ${Gameboard[4]} | ${Gameboard[5]} |`);
     console.log(`| ${Gameboard[6]} | ${Gameboard[7]} | ${Gameboard[8]} |`);
+    for (let i = 0; i < 9; i++) {
+      const cell = document.querySelector(`#cell-${[i]}`);
+      Gameboard[i] === "X"
+        ? (Gameboard[i] = `<i class="fa-solid fa-x"></i>`)
+        : (Gameboard[i] = `<i class="fa-regular fa-circle"></i>`);
+      cell.innerHTML += Gameboard[i];
+    }
   };
 
   const showsWinner = () => {
@@ -147,6 +154,62 @@ const displayController = () => {
     console.log(`The position "${pos}" was occupied. Try again!`);
   };
 
+  const toggleTheme = () => {
+    const ambientBtn = document.querySelector("#ambient-btn");
+    const header = document.querySelector("header");
+    const settings = document.querySelector(".settings-btn");
+    const reset = document.querySelector(".reset-btn");
+    const turn = document.querySelector(".turn-message");
+    const message = document.querySelector(".message");
+    const cells = [...document.querySelectorAll(".cell")];
+    const xIcons = document.getElementsByClassName("fa-x");
+    const OIcons = document.getElementsByClassName("fa-circle");
+    const footer = document.querySelector(".footer-link");
+    ambientBtn.addEventListener("click", () => {
+      ambientBtn.className === "fa fa-sun"
+        ? (ambientBtn.classList = "fa fa-moon")
+        : (ambientBtn.classList = "fa fa-sun");
+      document.body.classList.toggle("dark");
+      header.classList.toggle("header-dark");
+      settings.classList.toggle("btn-dark");
+      reset.classList.toggle("btn-dark");
+      turn.classList.toggle("turn-dark");
+      message.classList.toggle("message-dark");
+      cells.map((el, index) => el.classList.toggle("cell-dark"));
+      for (let i = 0; i < xIcons.length; i++) {
+        xIcons[i].classList.toggle("X-dark");
+      }
+      for (let i = 0; i < OIcons.length; i++) {
+        OIcons[i].classList.toggle("O-dark");
+      }
+      footer.classList.toggle("footer-dark");
+    });
+  };
+  
+  const toggleDialog = () => {
+    const closeBtn = document.querySelector("#closeBtn");
+    const settingsDialog = document.querySelector("#settingsDialog");
+    const settingsBtn = document.querySelector(".settings-btn");
+    settingsBtn.addEventListener("click", () => {
+      settingsDialog.showModal();
+    });
+    closeBtn.addEventListener("click", () => {
+      settingsDialog.close();
+    });
+  };
+  const togglePlayerTwoOptions = () => {
+    const gameMode = document.querySelector("#game-mode");
+    gameMode.addEventListener("change", () => {
+      if (gameMode.value === "player-machine") {
+        document.querySelector("#machine-group").style.visibility = "hidden";
+        document.querySelector("#player-name-two").removeAttribute("required");
+      } else {
+        document.querySelector("#player-name-two").setAttribute("required",'');
+        document.querySelector("#machine-group").style.visibility = "visible";
+      }
+    });
+  };
+
   return {
     startMessage,
     showsGameBoard,
@@ -155,6 +218,9 @@ const displayController = () => {
     showsTie,
     showsMovements,
     showsOccupiedPosition,
+    toggleTheme,
+    toggleDialog,
+    togglePlayerTwoOptions
   };
 };
 
@@ -167,55 +233,12 @@ const Game = () => {
   return { switchPlayerTurn, getCurrentPlayer, currentPlayer };
 };
 
-const toggleTheme = () => {
-  const ambientBtn = document.querySelector("#ambient-btn");
-  const header = document.querySelector("header");
-  const title = document.querySelector(".title");
-  const settings = document.querySelector(".settings-btn");
-  const reset = document.querySelector(".reset-btn");
-  const turn = document.querySelector(".turn-message");
-  xIcon = [...document.querySelectorAll("i.fa-solid.fa-x")];
-  oIcon = [...document.querySelectorAll("i.fa-regular.fa-circle")];
-  const message = document.querySelector(".message");
-  const small = document.querySelector("small");
-  ambientBtn.addEventListener("click", () => {
-    ambientBtn.className === "fa fa-lightbulb"
-      ? (ambientBtn.classList = "fa fa-moon")
-      : (ambientBtn.classList = "fa fa-lightbulb");
-    document.body.classList.toggle("light");
-    header.classList.toggle("header-light");
-    title.classList.toggle("title-light");
-    settings.classList.toggle("btn-light");
-    reset.classList.toggle("btn-light");
-    turn.classList.toggle("turn-light");
-    xIcon.map((el) => el.classList.toggle("x-light"));
-    oIcon.map((el) => el.classList.toggle("circle-light"));
-    for (let i = 0; i < 9; i++) {
-      const cell = document.querySelector(`#cell-${i}`);
-      cell.classList.toggle("grid-light");
-    }
-    message.classList.toggle("message-light");
-    small.classList.toggle("footer-light");
-    small.children[0].classList.toggle("footer-light");
-  });
-};
-
-const toggleDialog = () => {
-  const closeBtn = document.querySelector("#closeBtn");
-  const settingsDialog = document.querySelector("#settingsDialog");
-  const settingsBtn = document.querySelector(".settings-btn");
-  settingsBtn.addEventListener("click", () => {
-    settingsDialog.showModal();
-  });
-  closeBtn.addEventListener("click", () => {
-    settingsDialog.close();
-  });
-};
 
 (() => {
-  toggleTheme();
-  toggleDialog();
-  displayController().startMessage();
+  displayController().toggleTheme();
+  displayController().toggleDialog();
+  displayController().togglePlayerTwoOptions();
+  // displayController().startMessage();
   displayController().showsGameBoard();
   displayController().showsTurn();
 })();
