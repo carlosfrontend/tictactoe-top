@@ -298,14 +298,7 @@ const Game = () => {
   const getCurrentPlayer = () => Game().currentPlayer;
 
   if (gameMode.value !== "") {
-    cells.forEach((cell) => cell.addEventListener("click", handleCellClick));
-    /*    cells.forEach((cell) =>
-      cell.addEventListener("click", (e) => {
-        e.stopImmediatePropagation();
-        let pos = +e.target.id.charAt(5);
-        Gameboard.setCell(pos);
-      })
-    ); */
+    cells.forEach((cell) => cell.addEventListener("click", handleCellClick)); // Add click listener to the cells
   }
 
   return { switchPlayerTurn, getCurrentPlayer, currentPlayer };
