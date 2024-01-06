@@ -319,6 +319,7 @@ select > .placeholder {
   .cell {
     height: 90;
     width: 90;
+    -webkit-tap-highlight-color: transparent !important;
   }
   .fa-x,
   .fa-circle {

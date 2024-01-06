@@ -3,41 +3,43 @@ const createGameBoard = () => {
   return board;
 };
 
-const Gameboard = createGameBoard();
+let Gameboard = createGameBoard();
+
+const cells = [...document.querySelectorAll(".cell")];
+
+function handleCellClick(e) {
+  e.stopImmediatePropagation();
+  let pos = +e.target.id.charAt(5);
+  Gameboard.setCell(pos);
+}
 
 Gameboard.setCell = (pos) => {
-  if (Game().getCurrentPlayer() !== undefined) {
-    Game().getCurrentPlayer().token === "X" ? (token = "X") : (token = "O");
-    Game().currentPlayer = Game().getCurrentPlayer();
-    let tokenIsSet = false;
-    if (Gameboard[pos] === "") {
-      Gameboard[pos] = token;
-      tokenIsSet = true;
-      displayController().showsGameBoard();
-      displayController().showsMovements(pos);
-      Gameboard.checkForWin(Game().getCurrentPlayer().token);
-      if (
-        Gameboard.checkForDraw() === false &&
-        Gameboard.checkForWin(Game().getCurrentPlayer().token) === false
-      ) {
-        displayController().showsTie();
-        // Gameboard.reset();
-        displayController().showsGameBoard();
-      }
-      if (
-        tokenIsSet &&
-        Gameboard.checkForWin(Game().getCurrentPlayer().token) === false &&
-        Gameboard.checkForDraw() === true
-      ) {
-        //If there is no tie or winner, change turn
-        Game().switchPlayerTurn();
-        displayController().showsTurn();
-      }
-      return tokenIsSet;
-    } else {
-      displayController().showsOccupiedPosition(pos);
-      return;
+  Game().getCurrentPlayer().token === "X" ? (token = "X") : (token = "O");
+  Game().currentPlayer = Game().getCurrentPlayer();
+  let tokenIsSet = false;
+  if (Gameboard[pos] === "") {
+    Gameboard[pos] = token;
+    tokenIsSet = true;
+    displayController().showsGameBoard();
+    displayController().showsMovements(pos);
+    Gameboard.checkForWin(Game().getCurrentPlayer().token);
+
+    if (
+      Gameboard.checkForDraw() === false &&
+      Gameboard.checkForWin(Game().getCurrentPlayer().token) === false
+    ) {
+      displayController().showsTie();
     }
+    if (
+      tokenIsSet &&
+      Gameboard.checkForWin(Game().getCurrentPlayer().token) === false &&
+      Gameboard.checkForDraw() === true
+    ) {
+      //If there is no tie or winner, change turn
+      Game().switchPlayerTurn();
+      displayController().showsTurn();
+    }
+    return tokenIsSet;
   } else {
     return;
   }
@@ -79,8 +81,6 @@ Gameboard.checkForWin = (token) => {
     (Gameboard[2] === token && Gameboard[4] === token && Gameboard[6] === token)
   ) {
     displayController().showsWinner();
-    // Gameboard.reset();
-    displayController().showsGameBoard();
     return true;
   } else {
     return false;
@@ -89,7 +89,7 @@ Gameboard.checkForWin = (token) => {
 
 Gameboard.checkForDraw = () => {
   // If there are no moves available it returns false otherwise it returns true
-  for (let i = 0; i < Gameboard.length; i++) {
+  for (let i = 0; i < Gameboard.length - 1; i++) {
     if (Gameboard.indexOf("") !== -1) {
       return true; // Movements are available
     } else {
@@ -103,11 +103,14 @@ const createPlayer = (name, token) => {
 };
 
 const displayController = () => {
+  const showResetMessage = () => {
+    document.querySelector(".turn-message").textContent =
+      "Click on Reset for to play again!";
+  };
   const startMessage = () => {
     document.querySelector(".turn-message").textContent =
       "Click on Settings for to play!";
     console.log("The play Tic Tac Toe Start!!");
-    // displayController().showsGameBoard();
   };
   const showsGameBoard = () => {
     console.log(`| ${Gameboard[0]} | ${Gameboard[1]} | ${Gameboard[2]} |`);
@@ -140,7 +143,8 @@ const displayController = () => {
     console.log(
       `Tic Tac Toe! player "${Game().getCurrentPlayer().name}" wins!`
     );
-    displayController().startMessage();
+    displayController().showResetMessage();
+    cells.forEach((cell) => cell.removeEventListener("click", handleCellClick)); // Stop listener on cells if there are winner
   };
 
   const showsTie = () => {
@@ -151,30 +155,22 @@ const displayController = () => {
   };
 
   const showsTurn = () => {
-    if (Game().getCurrentPlayer() !== undefined) {
-      const turnMessage = document.querySelector(".turn-message");
-      turnMessage.textContent = `${
-        Game().getCurrentPlayer().name
-      }'s turn with token "${Game().getCurrentPlayer().token}" `;
-      console.log(
-        `${Game().getCurrentPlayer().name}'s turn with token "${
-          Game().getCurrentPlayer().token
-        }" `
-      );
-    }
-    return;
+    const turnMessage = document.querySelector(".turn-message");
+    turnMessage.textContent = `${
+      Game().getCurrentPlayer().name
+    }'s turn with token "${Game().getCurrentPlayer().token}" `;
+    console.log(
+      `${Game().getCurrentPlayer().name}'s turn with token "${
+        Game().getCurrentPlayer().token
+      }" `
+    );
   };
   const showsMovements = (pos) => {
-    // displayController().showsGameBoard();
     console.log(
       `The player "${Game().getCurrentPlayer().name}" draw "${
         Game().getCurrentPlayer().token
       }" in the position ${pos}`
     );
-  };
-
-  const showsOccupiedPosition = (pos) => {
-    console.log(`The position "${pos}" was occupied. Try again!`);
   };
 
   const toggleTheme = () => {
@@ -232,6 +228,9 @@ const displayController = () => {
       }
     });
   };
+  const cleanMessage = () => {
+    document.querySelector(".message").textContent = "";
+  };
 
   return {
     startMessage,
@@ -240,10 +239,11 @@ const displayController = () => {
     showsTurn,
     showsTie,
     showsMovements,
-    showsOccupiedPosition,
     toggleTheme,
     toggleDialog,
     togglePlayerTwoOptions,
+    showResetMessage,
+    cleanMessage,
   };
 };
 
@@ -258,8 +258,7 @@ const Game = () => {
   const playerOneNameInput = document.querySelector("#player-name-one");
   const playerOneTokenInput = document.querySelector("#token-one");
   const playerTwoNameInput = document.querySelector("#player-name-two");
-  const cells = [...document.querySelectorAll(".cell")];
-  const resetBtn = document.querySelector(".reset-btn");
+  
   form.addEventListener("submit", (e) => {
     e.preventDefault();
     if (gameMode.value === "player-player") {
@@ -299,13 +298,14 @@ const Game = () => {
   const getCurrentPlayer = () => Game().currentPlayer;
 
   if (gameMode.value !== "") {
-    cells.forEach((cell) =>
+    cells.forEach((cell) => cell.addEventListener("click", handleCellClick));
+    /*    cells.forEach((cell) =>
       cell.addEventListener("click", (e) => {
         e.stopImmediatePropagation();
         let pos = +e.target.id.charAt(5);
         Gameboard.setCell(pos);
       })
-    );
+    ); */
   }
 
   return { switchPlayerTurn, getCurrentPlayer, currentPlayer };
@@ -317,5 +317,11 @@ const Game = () => {
   displayController().togglePlayerTwoOptions();
   displayController().startMessage();
   Game();
-  displayController().showsGameBoard();
 })();
+
+document.querySelector(".reset-btn").addEventListener("click", () => {
+  Gameboard.reset();
+  displayController().showsGameBoard();
+  displayController().showsTurn();
+  displayController().cleanMessage();
+});
