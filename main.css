@@ -276,6 +276,14 @@ select {
   padding: 0.2em 0.8em;
 }
 
+select > .placeholder {
+  display: none;
+}
+
+select > .placeholder {
+  display: none;
+}
+
 #submitBtn,
 #closeBtn,
 #cleanBtn {

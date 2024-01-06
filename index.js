@@ -1,39 +1,44 @@
 const createGameBoard = () => {
-  const board = ["O", "O", "X", "O", "X", "O", "X", "O", "X"];
+  const board = ["", "", "", "", "", "", "", "", ""];
   return board;
 };
 
 const Gameboard = createGameBoard();
 
 Gameboard.setCell = (pos) => {
-  Game().getCurrentPlayer().token === "X" ? (token = "X") : (token = "O");
-  Game().currentPlayer = Game().getCurrentPlayer();
-  let tokenIsSet = false;
-  if (Gameboard[pos] === "") {
-    Gameboard[pos] = token;
-    tokenIsSet = true;
-    displayController().showsMovements(pos);
-    Gameboard.checkForWin(Game().getCurrentPlayer().token);
-    if (
-      Gameboard.checkForDraw() === false &&
-      Gameboard.checkForWin(Game().getCurrentPlayer().token) === false
-    ) {
-      displayController().showsTie();
-      Gameboard.reset();
+  if (Game().getCurrentPlayer() !== undefined) {
+    Game().getCurrentPlayer().token === "X" ? (token = "X") : (token = "O");
+    Game().currentPlayer = Game().getCurrentPlayer();
+    let tokenIsSet = false;
+    if (Gameboard[pos] === "") {
+      Gameboard[pos] = token;
+      tokenIsSet = true;
       displayController().showsGameBoard();
+      displayController().showsMovements(pos);
+      Gameboard.checkForWin(Game().getCurrentPlayer().token);
+      if (
+        Gameboard.checkForDraw() === false &&
+        Gameboard.checkForWin(Game().getCurrentPlayer().token) === false
+      ) {
+        displayController().showsTie();
+        // Gameboard.reset();
+        displayController().showsGameBoard();
+      }
+      if (
+        tokenIsSet &&
+        Gameboard.checkForWin(Game().getCurrentPlayer().token) === false &&
+        Gameboard.checkForDraw() === true
+      ) {
+        //If there is no tie or winner, change turn
+        Game().switchPlayerTurn();
+        displayController().showsTurn();
+      }
+      return tokenIsSet;
+    } else {
+      displayController().showsOccupiedPosition(pos);
+      return;
     }
-    if (
-      tokenIsSet &&
-      Gameboard.checkForWin(Game().getCurrentPlayer().token) === false &&
-      Gameboard.checkForDraw() === true
-    ) {
-      //If there is no tie or winner, change turn
-      Game().switchPlayerTurn();
-      displayController().showsTurn();
-    }
-    return tokenIsSet;
   } else {
-    displayController().showsOccupiedPosition(pos);
     return;
   }
 };
@@ -74,7 +79,7 @@ Gameboard.checkForWin = (token) => {
     (Gameboard[2] === token && Gameboard[4] === token && Gameboard[6] === token)
   ) {
     displayController().showsWinner();
-    Gameboard.reset();
+    // Gameboard.reset();
     displayController().showsGameBoard();
     return true;
   } else {
@@ -96,18 +101,13 @@ Gameboard.checkForDraw = () => {
 const createPlayer = (name, token) => {
   return { name, token };
 };
-const playerOne = createPlayer("Player One", "X");
-const playerTwo = createPlayer(
-  "Mr. Robot",
-  playerOne.token === "X" ? "O" : "X"
-);
-const players = [playerOne, playerTwo];
-
-let currentPlayer = players[0];
 
 const displayController = () => {
   const startMessage = () => {
+    document.querySelector(".turn-message").textContent =
+      "Click on Settings for to play!";
     console.log("The play Tic Tac Toe Start!!");
+    // displayController().showsGameBoard();
   };
   const showsGameBoard = () => {
     console.log(`| ${Gameboard[0]} | ${Gameboard[1]} | ${Gameboard[2]} |`);
@@ -115,14 +115,28 @@ const displayController = () => {
     console.log(`| ${Gameboard[6]} | ${Gameboard[7]} | ${Gameboard[8]} |`);
     for (let i = 0; i < 9; i++) {
       const cell = document.querySelector(`#cell-${[i]}`);
-      Gameboard[i] === "X"
-        ? (Gameboard[i] = `<i class="fa-solid fa-x"></i>`)
-        : (Gameboard[i] = `<i class="fa-regular fa-circle"></i>`);
-      cell.innerHTML += Gameboard[i];
+
+      if (Gameboard[i] === "X") {
+        Gameboard[i] = `X`;
+      }
+      if (Gameboard[i] === "O") {
+        Gameboard[i] = `O`;
+      }
+      cell.innerHTML = Gameboard[i];
+
+      if (Gameboard[i] === "X") {
+        cell.innerHTML = '<i class="fa-solid fa-x"></i>';
+      }
+
+      if (Gameboard[i] === "O") {
+        cell.innerHTML = '<i class="fa-regular fa-circle"></i>';
+      }
     }
   };
 
   const showsWinner = () => {
+    const message = document.querySelector(".message");
+    message.textContent = `${Game().getCurrentPlayer().name}" wins!`;
     console.log(
       `Tic Tac Toe! player "${Game().getCurrentPlayer().name}" wins!`
     );
@@ -130,19 +144,28 @@ const displayController = () => {
   };
 
   const showsTie = () => {
+    const message = document.querySelector(".message");
+    message.textContent = `The Game Was Tied`;
     console.log("The Game Was Tied!!");
     displayController().startMessage();
   };
 
   const showsTurn = () => {
-    console.log(
-      `Now is the turn of: "${Game().getCurrentPlayer().name}" with token "${
-        Game().getCurrentPlayer().token
-      }"`
-    );
+    if (Game().getCurrentPlayer() !== undefined) {
+      const turnMessage = document.querySelector(".turn-message");
+      turnMessage.textContent = `${
+        Game().getCurrentPlayer().name
+      }'s turn with token "${Game().getCurrentPlayer().token}" `;
+      console.log(
+        `${Game().getCurrentPlayer().name}'s turn with token "${
+          Game().getCurrentPlayer().token
+        }" `
+      );
+    }
+    return;
   };
   const showsMovements = (pos) => {
-    displayController().showsGameBoard();
+    // displayController().showsGameBoard();
     console.log(
       `The player "${Game().getCurrentPlayer().name}" draw "${
         Game().getCurrentPlayer().token
@@ -185,7 +208,7 @@ const displayController = () => {
       footer.classList.toggle("footer-dark");
     });
   };
-  
+
   const toggleDialog = () => {
     const closeBtn = document.querySelector("#closeBtn");
     const settingsDialog = document.querySelector("#settingsDialog");
@@ -204,7 +227,7 @@ const displayController = () => {
         document.querySelector("#machine-group").style.visibility = "hidden";
         document.querySelector("#player-name-two").removeAttribute("required");
       } else {
-        document.querySelector("#player-name-two").setAttribute("required",'');
+        document.querySelector("#player-name-two").setAttribute("required", "");
         document.querySelector("#machine-group").style.visibility = "visible";
       }
     });
@@ -220,25 +243,79 @@ const displayController = () => {
     showsOccupiedPosition,
     toggleTheme,
     toggleDialog,
-    togglePlayerTwoOptions
+    togglePlayerTwoOptions,
   };
 };
 
+let playerOne = {};
+let playerTwo = {};
+let currentPlayer = {};
+let players = [];
+
 const Game = () => {
+  const form = document.querySelector("#form");
+  const gameMode = document.querySelector("#game-mode");
+  const playerOneNameInput = document.querySelector("#player-name-one");
+  const playerOneTokenInput = document.querySelector("#token-one");
+  const playerTwoNameInput = document.querySelector("#player-name-two");
+  const cells = [...document.querySelectorAll(".cell")];
+  const resetBtn = document.querySelector(".reset-btn");
+  form.addEventListener("submit", (e) => {
+    e.preventDefault();
+    if (gameMode.value === "player-player") {
+      playerOne = createPlayer(
+        playerOneNameInput.value,
+        playerOneTokenInput.value
+      );
+      playerTwo = createPlayer(
+        playerTwoNameInput.value,
+        playerOne.token === "X" ? "O" : "X"
+      );
+
+      players = [playerOne, playerTwo];
+      currentPlayer = players[0];
+      displayController().showsTurn();
+      return currentPlayer;
+    }
+    if (gameMode.value === "player-machine") {
+      playerOne = createPlayer(
+        playerOneNameInput.value,
+        playerOneTokenInput.value
+      );
+      playerTwo = createPlayer(
+        "Mr. Robot",
+        playerOne.token === "X" ? "O" : "X"
+      );
+
+      players = [playerOne, playerTwo];
+      currentPlayer = players[0];
+      displayController().showsTurn();
+      return currentPlayer;
+    }
+  });
   const switchPlayerTurn = () => {
     currentPlayer = currentPlayer === players[0] ? players[1] : players[0];
   };
-  const getCurrentPlayer = () => currentPlayer;
+  const getCurrentPlayer = () => Game().currentPlayer;
+
+  if (gameMode.value !== "") {
+    cells.forEach((cell) =>
+      cell.addEventListener("click", (e) => {
+        e.stopImmediatePropagation();
+        let pos = +e.target.id.charAt(5);
+        Gameboard.setCell(pos);
+      })
+    );
+  }
 
   return { switchPlayerTurn, getCurrentPlayer, currentPlayer };
 };
-
 
 (() => {
   displayController().toggleTheme();
   displayController().toggleDialog();
   displayController().togglePlayerTwoOptions();
-  // displayController().startMessage();
+  displayController().startMessage();
+  Game();
   displayController().showsGameBoard();
-  displayController().showsTurn();
 })();

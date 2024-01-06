@@ -20,7 +20,8 @@
         <form id="form" action="" method="POST">
           <div class="group">
             <label for="game-mode">Game Mode</label>
-            <select name="game-mode" id="game-mode">
+            <select name="game-mode" id="game-mode" required>
+              <option class="placeholder" selected disabled value="">Select Game Mode</option>
               <option value="player-player">Player VS Player</option>
               <option value="player-machine">Player VS Machine</option>
             </select>
@@ -32,7 +33,8 @@
               name="player-name-one"
               id="player-name-one"
               placeholder="Player One"
-              maxlength="8"
+              maxlength="15"
+              title="maximum 15 characters"
               required
             />
           </div>
@@ -50,7 +52,8 @@
               name="player-name-two"
               id="player-name-two"
               placeholder="Player Two"
-              maxlength="8"
+              maxlength="15"
+              title="maximum 15 characters"
               required
             />
           </div>
@@ -79,7 +82,7 @@
         </button>
       </div>
       <div class="turn-box">
-        <h2 class="turn-message">Juanito's turn with X</h2>
+        <h2 class="turn-message"></h2>
       </div>
       <div class="board-container">
        <div class="grid-container">
@@ -95,7 +98,7 @@
        </div>
       </div>
       <div class="message-box">
-        <h2 class="message">Juanito Wins!</h2>
+        <h2 class="message"></h2>
       </div>
     </div>
     <footer class="footer">
