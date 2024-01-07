@@ -6,10 +6,19 @@ const createGameBoard = () => {
 let Gameboard = createGameBoard();
 
 const cells = [...document.querySelectorAll(".cell")];
+const resetBtn = document.querySelector(".reset-btn");
+const ambientBtn = document.querySelector("#ambient-btn");
+const header = document.querySelector("header");
+const settings = document.querySelector(".settings-btn");
+const turn = document.querySelector(".turn-message");
+const message = document.querySelector(".message");
+const xIcons = document.getElementsByClassName("fa-x");
+const OIcons = document.getElementsByClassName("fa-circle");
+const footer = document.querySelector(".footer-link");
 
 function handleCellClick(e) {
   e.stopImmediatePropagation();
-  let pos = +e.target.id.charAt(5);
+  let pos = e.target.id.charAt(5);
   Gameboard.setCell(pos);
 }
 
@@ -174,16 +183,6 @@ const displayController = () => {
   };
 
   const toggleTheme = () => {
-    const ambientBtn = document.querySelector("#ambient-btn");
-    const header = document.querySelector("header");
-    const settings = document.querySelector(".settings-btn");
-    const reset = document.querySelector(".reset-btn");
-    const turn = document.querySelector(".turn-message");
-    const message = document.querySelector(".message");
-    const cells = [...document.querySelectorAll(".cell")];
-    const xIcons = document.getElementsByClassName("fa-x");
-    const OIcons = document.getElementsByClassName("fa-circle");
-    const footer = document.querySelector(".footer-link");
     ambientBtn.addEventListener("click", () => {
       ambientBtn.className === "fa fa-sun"
         ? (ambientBtn.classList = "fa fa-moon")
@@ -191,16 +190,9 @@ const displayController = () => {
       document.body.classList.toggle("dark");
       header.classList.toggle("header-dark");
       settings.classList.toggle("btn-dark");
-      reset.classList.toggle("btn-dark");
+      resetBtn.classList.toggle("btn-dark");
       turn.classList.toggle("turn-dark");
       message.classList.toggle("message-dark");
-      cells.map((el, index) => el.classList.toggle("cell-dark"));
-      for (let i = 0; i < xIcons.length; i++) {
-        xIcons[i].classList.toggle("X-dark");
-      }
-      for (let i = 0; i < OIcons.length; i++) {
-        OIcons[i].classList.toggle("O-dark");
-      }
       footer.classList.toggle("footer-dark");
     });
   };
@@ -232,6 +224,15 @@ const displayController = () => {
     document.querySelector(".message").textContent = "";
   };
 
+  const resetDisplay = () => {
+    resetBtn.addEventListener("click", () => {
+      Gameboard.reset();
+      displayController().showsGameBoard();
+      displayController().showsTurn();
+      displayController().cleanMessage();
+    });
+  };
+
   return {
     startMessage,
     showsGameBoard,
@@ -244,6 +245,7 @@ const displayController = () => {
     togglePlayerTwoOptions,
     showResetMessage,
     cleanMessage,
+    resetDisplay,
   };
 };
 
@@ -258,7 +260,6 @@ const Game = () => {
   const playerOneNameInput = document.querySelector("#player-name-one");
   const playerOneTokenInput = document.querySelector("#token-one");
   const playerTwoNameInput = document.querySelector("#player-name-two");
-  
   form.addEventListener("submit", (e) => {
     e.preventDefault();
     if (gameMode.value === "player-player") {
@@ -298,7 +299,10 @@ const Game = () => {
   const getCurrentPlayer = () => Game().currentPlayer;
 
   if (gameMode.value !== "") {
+    resetBtn.removeAttribute("disabled"); // Enabled reset button
     cells.forEach((cell) => cell.addEventListener("click", handleCellClick)); // Add click listener to the cells
+  } else {
+    resetBtn.setAttribute("disabled", ""); // Disabled reset button
   }
 
   return { switchPlayerTurn, getCurrentPlayer, currentPlayer };
@@ -310,11 +314,5 @@ const Game = () => {
   displayController().togglePlayerTwoOptions();
   displayController().startMessage();
   Game();
+  displayController().resetDisplay();
 })();
-
-document.querySelector(".reset-btn").addEventListener("click", () => {
-  Gameboard.reset();
-  displayController().showsGameBoard();
-  displayController().showsTurn();
-  displayController().cleanMessage();
-});

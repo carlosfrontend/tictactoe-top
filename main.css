@@ -185,11 +185,11 @@ footer {
   font-size: 4.5rem;
 }
 .fa-x {
-  color: var(--TTT-800);
+  color: var(--TTT-500);
 }
 
 .fa-circle {
-  color: var(--TTT-600);
+  color: var(--TTT-300);
 }
 
 .dark {
@@ -212,16 +212,6 @@ footer {
 .turn-dark,
 .message-dark {
   color: var(--TTT-300);
-}
-
-.cell-dark {
-  border-color: var(--TTT-100) !important;
-}
-.X-dark {
-  color: var(--TTT-300);
-}
-.O-dark {
-  color: var(--TTT-400);
 }
 
 .footer-dark {
