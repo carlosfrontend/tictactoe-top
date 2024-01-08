@@ -36,7 +36,6 @@ Gameboard.setCell = (pos) => {
     Gameboard[pos] = token;
     tokenIsSet = true;
     displayController().showsGameBoard();
-    displayController().showsMovements(pos);
     Gameboard.checkForWin(Game().getCurrentPlayer().token);
 
     if (
@@ -125,12 +124,8 @@ const displayController = () => {
   const startMessage = () => {
     document.querySelector(".turn-message").textContent =
       "Click on Settings for to play!";
-    console.log("The play Tic Tac Toe Start!!");
   };
   const showsGameBoard = () => {
-    console.log(`| ${Gameboard[0]} | ${Gameboard[1]} | ${Gameboard[2]} |`);
-    console.log(`| ${Gameboard[3]} | ${Gameboard[4]} | ${Gameboard[5]} |`);
-    console.log(`| ${Gameboard[6]} | ${Gameboard[7]} | ${Gameboard[8]} |`);
     for (let i = 0; i < 9; i++) {
       const cell = document.querySelector(`#cell-${[i]}`);
 
@@ -154,7 +149,6 @@ const displayController = () => {
 
   const showsWinner = () => {
     message.textContent = `${Game().getCurrentPlayer().name} wins!`;
-    console.log(`Tic Tac Toe! player "${Game().getCurrentPlayer().name} wins!`);
     displayController().showResetMessage();
     cells.forEach((cell) => cell.removeEventListener("click", handleCellClick)); // Stop listener on cells if there are winner
   };
@@ -162,7 +156,6 @@ const displayController = () => {
   const showsTie = () => {
     const message = document.querySelector(".message");
     message.textContent = `The Game Was Tied`;
-    console.log("The Game Was Tied!!");
     displayController().startMessage();
   };
 
@@ -175,7 +168,6 @@ const displayController = () => {
       Gameboard[randomPos] !== playerTwo.token
     ) {
       Gameboard[randomPos] = playerTwo.token;
-      console.log(randomPos);
       Game().switchPlayerTurn();
       displayController().showsGameBoard();
       Gameboard.checkForWin(playerTwo.token);
@@ -194,23 +186,11 @@ const displayController = () => {
       turnMessage.textContent = `${
         Game().getCurrentPlayer().name
       }'s turn with token "${Game().getCurrentPlayer().token}" `;
-      console.log(
-        `${Game().getCurrentPlayer().name}'s turn with token "${
-          Game().getCurrentPlayer().token
-        }" `
-      );
     }
     if (Gameboard[randomPos] !== "") {
       showsTurn(); // Recursive call
     }
     return randomPos;
-  };
-  const showsMovements = (pos) => {
-    console.log(
-      `The player "${Game().getCurrentPlayer().name}" draw "${
-        Game().getCurrentPlayer().token
-      }" in the position ${pos}`
-    );
   };
 
   const toggleTheme = () => {
@@ -279,7 +259,6 @@ const displayController = () => {
     showsWinner,
     showsTurn,
     showsTie,
-    showsMovements,
     toggleTheme,
     toggleDialog,
     togglePlayerTwoOptions,
