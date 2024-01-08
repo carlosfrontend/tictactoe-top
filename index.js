@@ -12,6 +12,7 @@ const header = document.querySelector("header");
 const settings = document.querySelector(".settings-btn");
 const turn = document.querySelector(".turn-message");
 const message = document.querySelector(".message");
+const turnMessage = document.querySelector(".turn-message")
 const xIcons = document.getElementsByClassName("fa-x");
 const OIcons = document.getElementsByClassName("fa-circle");
 const footer = document.querySelector(".footer-link");
@@ -154,9 +155,7 @@ const displayController = () => {
   const showsWinner = () => {
     const message = document.querySelector(".message");
     message.textContent = `${Game().getCurrentPlayer().name} wins!`;
-    console.log(
-      `Tic Tac Toe! player "${Game().getCurrentPlayer().name} wins!`
-    );
+    console.log(`Tic Tac Toe! player "${Game().getCurrentPlayer().name} wins!`);
     displayController().showResetMessage();
     cells.forEach((cell) => cell.removeEventListener("click", handleCellClick)); // Stop listener on cells if there are winner
   };
@@ -169,7 +168,6 @@ const displayController = () => {
   };
 
   const showsTurn = () => {
-    const turnMessage = document.querySelector(".turn-message");
     turnMessage.textContent = `${
       Game().getCurrentPlayer().name
     }'s turn with token "${Game().getCurrentPlayer().token}" `;
@@ -208,6 +206,7 @@ const displayController = () => {
     const settingsBtn = document.querySelector(".settings-btn");
     settingsBtn.addEventListener("click", () => {
       settingsDialog.showModal();
+      turnMessage.textContent = "";
       gameMode.value = "";
       playerOneNameInput.value = "";
       playerOneTokenInput.value = "";
@@ -234,7 +233,7 @@ const displayController = () => {
     });
   };
   const cleanMessage = () => {
-    document.querySelector(".message").textContent = "";
+   message.textContent = "";
   };
 
   const resetDisplay = () => {
