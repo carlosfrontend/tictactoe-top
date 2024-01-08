@@ -153,9 +153,9 @@ const displayController = () => {
 
   const showsWinner = () => {
     const message = document.querySelector(".message");
-    message.textContent = `${Game().getCurrentPlayer().name}" wins!`;
+    message.textContent = `${Game().getCurrentPlayer().name} wins!`;
     console.log(
-      `Tic Tac Toe! player "${Game().getCurrentPlayer().name}" wins!`
+      `Tic Tac Toe! player "${Game().getCurrentPlayer().name} wins!`
     );
     displayController().showResetMessage();
     cells.forEach((cell) => cell.removeEventListener("click", handleCellClick)); // Stop listener on cells if there are winner
