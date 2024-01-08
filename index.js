@@ -12,7 +12,7 @@ const header = document.querySelector("header");
 const settings = document.querySelector(".settings-btn");
 const turn = document.querySelector(".turn-message");
 const message = document.querySelector(".message");
-const turnMessage = document.querySelector(".turn-message")
+const turnMessage = document.querySelector(".turn-message");
 const xIcons = document.getElementsByClassName("fa-x");
 const OIcons = document.getElementsByClassName("fa-circle");
 const footer = document.querySelector(".footer-link");
@@ -24,7 +24,7 @@ let playerTwoNameInput = document.querySelector("#player-name-two");
 
 function handleCellClick(e) {
   e.stopImmediatePropagation();
-  let pos = e.target.id.charAt(5);
+  let pos = e.target.id.charAt(5); // Only get the number of the id of the cell
   Gameboard.setCell(pos);
 }
 
@@ -153,7 +153,6 @@ const displayController = () => {
   };
 
   const showsWinner = () => {
-    const message = document.querySelector(".message");
     message.textContent = `${Game().getCurrentPlayer().name} wins!`;
     console.log(`Tic Tac Toe! player "${Game().getCurrentPlayer().name} wins!`);
     displayController().showResetMessage();
@@ -168,14 +167,43 @@ const displayController = () => {
   };
 
   const showsTurn = () => {
-    turnMessage.textContent = `${
-      Game().getCurrentPlayer().name
-    }'s turn with token "${Game().getCurrentPlayer().token}" `;
-    console.log(
-      `${Game().getCurrentPlayer().name}'s turn with token "${
-        Game().getCurrentPlayer().token
-      }" `
-    );
+    let randomPos = Math.round(Math.random() * 8);
+    if (
+      Game().getCurrentPlayer().name === "Mr. Robot" &&
+      Gameboard[randomPos] !== playerOne.token &&
+      Gameboard[randomPos] === "" &&
+      Gameboard[randomPos] !== playerTwo.token
+    ) {
+      Gameboard[randomPos] = playerTwo.token;
+      console.log(randomPos);
+      Game().switchPlayerTurn();
+      displayController().showsGameBoard();
+      Gameboard.checkForWin(playerTwo.token);
+      if (
+        Gameboard.checkForDraw() === false &&
+        Gameboard.checkForWin(playerTwo.token) === false
+      ) {
+        displayController().showsTie();
+      }
+
+      if (Gameboard.checkForWin(playerTwo.token) === true && Gameboard.checkForDraw() === true) {
+        message.textContent = `${playerTwo.name} Wins!`;
+        return;
+      }
+    } else {
+      turnMessage.textContent = `${
+        Game().getCurrentPlayer().name
+      }'s turn with token "${Game().getCurrentPlayer().token}" `;
+      console.log(
+        `${Game().getCurrentPlayer().name}'s turn with token "${
+          Game().getCurrentPlayer().token
+        }" `
+      );
+    }
+    if (Gameboard[randomPos] !== "") {
+      showsTurn(); // Recursive call
+    }
+    return randomPos;
   };
   const showsMovements = (pos) => {
     console.log(
@@ -233,7 +261,7 @@ const displayController = () => {
     });
   };
   const cleanMessage = () => {
-   message.textContent = "";
+    message.textContent = "";
   };
 
   const resetDisplay = () => {
