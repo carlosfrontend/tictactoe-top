@@ -15,6 +15,11 @@ const message = document.querySelector(".message");
 const xIcons = document.getElementsByClassName("fa-x");
 const OIcons = document.getElementsByClassName("fa-circle");
 const footer = document.querySelector(".footer-link");
+const form = document.querySelector("#form");
+let gameMode = document.querySelector("#game-mode");
+let playerOneNameInput = document.querySelector("#player-name-one");
+let playerOneTokenInput = document.querySelector("#token-one");
+let playerTwoNameInput = document.querySelector("#player-name-two");
 
 function handleCellClick(e) {
   e.stopImmediatePropagation();
@@ -114,7 +119,7 @@ const createPlayer = (name, token) => {
 const displayController = () => {
   const showResetMessage = () => {
     document.querySelector(".turn-message").textContent =
-      "Click on Reset for to play again!";
+      "Click on Reset or Settings for to play again!";
   };
   const startMessage = () => {
     document.querySelector(".turn-message").textContent =
@@ -203,6 +208,14 @@ const displayController = () => {
     const settingsBtn = document.querySelector(".settings-btn");
     settingsBtn.addEventListener("click", () => {
       settingsDialog.showModal();
+      gameMode.value = "";
+      playerOneNameInput.value = "";
+      playerOneTokenInput.value = "";
+      playerTwoNameInput.value = "";
+      Game().currentPlayer = {};
+      Gameboard.reset();
+      displayController().cleanMessage();
+      displayController().showsGameBoard();
     });
     closeBtn.addEventListener("click", () => {
       settingsDialog.close();
@@ -255,13 +268,8 @@ let currentPlayer = {};
 let players = [];
 
 const Game = () => {
-  const form = document.querySelector("#form");
-  const gameMode = document.querySelector("#game-mode");
-  const playerOneNameInput = document.querySelector("#player-name-one");
-  const playerOneTokenInput = document.querySelector("#token-one");
-  const playerTwoNameInput = document.querySelector("#player-name-two");
   form.addEventListener("submit", (e) => {
-    e.preventDefault();
+    e.stopImmediatePropagation();
     if (gameMode.value === "player-player") {
       playerOne = createPlayer(
         playerOneNameInput.value,

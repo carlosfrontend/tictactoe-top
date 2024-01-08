@@ -18,7 +18,7 @@
     <!-- Dialog start -->
     <dialog id="settingsDialog">
       <div class="form-container">
-        <form id="form" action="" method="POST">
+        <form id="form" method="dialog">
           <div class="group">
             <label for="game-mode">Game Mode</label>
             <select name="game-mode" id="game-mode" required>
@@ -42,6 +42,7 @@
           <div class="group">
             <label for="token-one">Token of Player One</label>
             <select name="token-one" id="token-one">
+              <option class="placeholder" selected disabled value="">Select Token</option>
               <option value="X">X</option>
               <option value="O">O</option>
             </select>
