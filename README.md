@@ -12,7 +12,7 @@ Juego clásico de tres en raya desarrollado con JavaScript, HTML y CSS. Este pro
 
 ## 🖼️ Captura de pantalla
 
-> 📌 _Nota:_ Asegúrate de que el archivo `screenshot.png` esté subido en la carpeta `assets/` del repositorio.
+![Captura desde 2025-05-14 17-36-21](https://github.com/user-attachments/assets/6f201818-19e2-430b-a470-24d9cae296fb)
 
 ---
 
